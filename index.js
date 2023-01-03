@@ -5,9 +5,8 @@ const bodyParser = require('body-parser')
 app.use(bodyParser.json())
 
 app.get('/notifications/:type', (req, res) => {
-    console.log(req)
     setTimeout(() => {
-        const template = req.params.type === "preview" ? getPreviewNotification() : getFullNotification()
+        const template = req.params.type === "preview" ? getPreviewNotification() : null
         res.json(template)
     }, 1000 * Math.random())
 })
@@ -16,37 +15,30 @@ app.get('/notifications/:type', (req, res) => {
 getPreviewNotification = () => {
     return {
         type: "View",
-        props: { mdp: true, style: { height: 140, borderWidth: 1, marginTop: 50, backgroundColor: "#F3E5F5" } },
+        props: {
+            flex: true, row: true,
+        },
         children: [
             {
-                type: "View",
-                props: { flex: true, row: true },
-                children: [
-                    {
-                        type: "View",
-                        props: { style: { flex: 0.5 } },
-                        children: [
-                            {
-                                type: "Text",
-                                children: "${text::notification.userName}",
-                            },
-                        ]
-                    },
-                    {
-                        type: "View",
-                        props: { vcenter: true, style: { flex: 1 } },
-                        children: [
-                            {
-                                type: "Text",
-                                children: "${text::notification.title}",
-                            },
-                        ]
-                    },
-                ]
+                type: "Image",
+                props: {
+                    source: { uri: "prop::notification.icon" },
+                    style: { width: 100, height: 100, borderRadius: 100 },
+                },
             },
+            {
+                type: "Text",
+                children: "${text::notification.name}",
+                props: {
+                    style: { color: "red", fontSize: 30 }
+                }
+
+
+            }
         ]
     }
 }
+
 
 getFullNotification = () => {
     return {
