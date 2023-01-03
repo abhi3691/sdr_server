@@ -5,6 +5,7 @@ const bodyParser = require('body-parser')
 app.use(bodyParser.json())
 
 app.get('/notifications/:type', (req, res) => {
+    console.log(req)
     setTimeout(() => {
         const template = req.params.type === "preview" ? getPreviewNotification() : getFullNotification()
         res.json(template)
